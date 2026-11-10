@@ -1,0 +1,26 @@
+INICIAR A DEMONSTRAÇÃO:
+.\start-demo.ps1
+
+CONSULTAR CONTEÚDOS PELO GATEWAY:
+curl.exe -i http://localhost:8000/content/boas-vindas
+curl.exe -i http://localhost:8000/content/video
+curl.exe -i http://localhost:8000/content/aula-sd
+
+REPETIR UMA CONSULTA PARA OBSERVAR HIT/MISS:
+curl.exe -i http://localhost:8000/content/boas-vindas
+curl.exe -i http://localhost:8000/content/boas-vindas
+curl.exe -i http://localhost:8000/content/boas-vindas
+curl.exe -i http://localhost:8000/content/boas-vindas
+
+VER MÉTRICAS:
+curl.exe http://localhost:8000/stats
+
+ATUALIZAR OS TRÊS CONTEÚDOS:
+$dados = @{ title = "Boas-vindas atualizadas"; body = "Este é o novo texto de boas-vindas." } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri "http://localhost:8000/admin/update/boas-vindas" -ContentType "application/json" -Body $dados
+
+$dados = @{ title = "Novo vídeo da aula"; body = "Descrição atualizada do conteúdo de vídeo." } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri "http://localhost:8000/admin/update/video" -ContentType "application/json" -Body $dados
+
+$dados = @{ title = "Aula de sistemas distribuídos"; body = "Conteúdo atualizado sobre origem, caches e balanceamento." } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri "http://localhost:8000/admin/update/aula-sd" -ContentType "application/json" -Body $dados
